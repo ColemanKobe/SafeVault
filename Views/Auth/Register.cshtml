@@ -1,0 +1,103 @@
+@model SafeVault.Models.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Create Your Account</h3>
+                <p class="mb-0 text-muted">Join SafeVault with secure password protection</p>
+            </div>
+            <div class="card-body">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success">
+                        @TempData["Success"]
+                    </div>
+                }
+
+                @if (TempData["LegacySubmission"] != null)
+                {
+                    <div class="alert alert-info">
+                        @TempData["LegacySubmission"]
+                    </div>
+                }
+
+                <form asp-action="Register" method="post">
+                    @Html.AntiForgeryToken()
+                    
+                    <div asp-validation-summary="All" class="alert alert-danger" style="display: none;"></div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Username" class="form-label">Username:</label>
+                        <input asp-for="Username" class="form-control" placeholder="Enter username" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                        <div class="form-text">3-50 characters, letters, numbers, and underscores only</div>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Email" class="form-label">Email Address:</label>
+                        <input asp-for="Email" class="form-control" type="email" placeholder="Enter email address" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <div class="form-text">We'll never share your email with anyone else</div>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Password" class="form-label">Password:</label>
+                        <input asp-for="Password" class="form-control" type="password" placeholder="Enter password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <div class="form-text">
+                            Must contain:
+                            <ul class="mb-0 mt-1" style="font-size: 0.875em;">
+                                <li>At least 8 characters</li>
+                                <li>One uppercase letter (A-Z)</li>
+                                <li>One lowercase letter (a-z)</li>
+                                <li>One number (0-9)</li>
+                                <li>One special character (@@$$!%*?&amp;)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-4">
+                        <label asp-for="ConfirmPassword" class="form-label">Confirm Password:</label>
+                        <input asp-for="ConfirmPassword" class="form-control" type="password" placeholder="Confirm password" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Create Account</button>
+                        <a href="/" class="btn btn-outline-secondary">Back to Home</a>
+                    </div>
+                </form>
+                
+                <hr class="mt-4">
+                <div class="text-center">
+                    <p class="mb-0">Already have an account? <a href="/Auth/Login">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Real-time password strength indicator
+        document.getElementById('Password').addEventListener('input', function() {
+            const password = this.value;
+            const requirements = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /\d/.test(password),
+                special: /[@@\$!%*?&]/.test(password)
+            };
+            
+            // Visual feedback could be added here
+            const strength = Object.values(requirements).filter(Boolean).length;
+            this.style.borderColor = strength >= 4 ? 'green' : strength >= 2 ? 'orange' : 'red';
+        });
+    </script>
+}

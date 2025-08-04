@@ -1,0 +1,99 @@
+@{
+    ViewData["Title"] = "User Dashboard";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4">Welcome to your SafeVault</h1>
+            <p class="lead">Hello, <strong>@User.Identity?.Name</strong>! Manage your secure documents here.</p>
+        </div>
+    </div>
+
+    <!-- User Dashboard Cards -->
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-upload text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">Upload Documents</h5>
+                    <p class="card-text">Securely upload and store your important documents with bank-level encryption.</p>
+                    <a href="@Url.Action("Upload", "User")" class="btn btn-primary">Upload Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-folder-open text-success" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">My Documents</h5>
+                    <p class="card-text">Access and manage all your stored documents in one secure location.</p>
+                    <a href="@Url.Action("Documents", "User")" class="btn btn-success">View Documents</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-user-cog text-info" style="font-size: 3rem;"></i>
+                    </div>
+                    <h5 class="card-title">Account Settings</h5>
+                    <p class="card-text">Manage your account preferences and security settings.</p>
+                    <a href="@Url.Action("Profile", "User")" class="btn btn-info">Manage Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Recent Activity</h3>
+            <div class="card">
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Account Created</h6>
+                                <p class="mb-1">Your SafeVault account was successfully created.</p>
+                                <small class="text-muted">Welcome to SafeVault!</small>
+                            </div>
+                            <small class="text-muted">Just now</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Notice -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-info" role="alert">
+                <h6 class="alert-heading">🔒 Security Notice</h6>
+                <p class="mb-0">Your documents are protected with AES-256 encryption and secure authentication. Always log out when finished and never share your credentials.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}

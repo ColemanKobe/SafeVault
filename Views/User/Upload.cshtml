@@ -1,0 +1,59 @@
+@{
+    ViewData["Title"] = "Upload Document";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="display-4">Upload Document</h1>
+            <p class="lead">Securely upload your documents to SafeVault.</p>
+
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="Upload" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Select Document</label>
+                            <input type="file" class="form-control" id="file" name="file" required 
+                                   accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png">
+                            <div class="form-text">Supported formats: PDF, DOC, DOCX, TXT, JPG, PNG (Max 10MB)</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description (Optional)</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" 
+                                      placeholder="Add a description for this document..."></textarea>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="encrypt" name="encrypt" checked>
+                            <label class="form-check-label" for="encrypt">
+                                Encrypt document (Recommended)
+                            </label>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-upload"></i> Upload Document
+                            </button>
+                            <a href="@Url.Action("Documents", "User")" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-4" role="alert">
+                <h6 class="alert-heading">🔒 Security Information</h6>
+                <ul class="mb-0">
+                    <li>All uploads are encrypted with AES-256 encryption</li>
+                    <li>Files are scanned for malware before storage</li>
+                    <li>Only you can access your uploaded documents</li>
+                    <li>Documents are backed up securely</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

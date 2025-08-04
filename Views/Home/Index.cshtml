@@ -1,0 +1,92 @@
+@{
+    ViewData["Title"] = "SafeVault - Secure Document Management";
+}
+
+<div class="text-center">
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <!-- Dashboard for authenticated users -->
+        <h1 class="display-4">Welcome to your SafeVault Dashboard</h1>
+        <p class="lead">Hello, <strong>@User.Identity.Name</strong>! Your secure documents are protected here.</p>
+        
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Upload Documents</h5>
+                        <p class="card-text">Securely upload and store your important documents.</p>
+                        <button class="btn btn-primary">Upload</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">View Documents</h5>
+                        <p class="card-text">Access and view your stored documents.</p>
+                        <button class="btn btn-outline-primary">View All</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Account Settings</h5>
+                        <p class="card-text">Manage your account and security settings.</p>
+                        <button class="btn btn-outline-secondary">Settings</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <form action="@Url.Action("Logout", "Auth")" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-outline-danger">Logout</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <!-- Landing page for unauthenticated users -->
+        <h1 class="display-4">Welcome to SafeVault</h1>
+        <p class="lead">Your secure document management solution. Protect and organize your important files with enterprise-grade security.</p>
+        
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">🔐 Bank-Level Security</h5>
+                        <p class="card-text">Your documents are protected with AES-256 encryption and secure authentication.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">📁 Organized Storage</h5>
+                        <p class="card-text">Easily categorize and find your documents with our intuitive organization system.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-5">
+            <a asp-controller="Auth" asp-action="Login" class="btn btn-primary btn-lg me-3">Login</a>
+            <a asp-controller="Auth" asp-action="Register" class="btn btn-outline-primary btn-lg">Create Account</a>
+        </div>
+    }
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}

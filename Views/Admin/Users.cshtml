@@ -1,0 +1,116 @@
+@model IEnumerable<SafeVault.Models.User>
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4">User Management</h1>
+            <p class="lead">Manage user accounts, roles, and permissions.</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Last Updated</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var user in Model.OrderBy(u => u.Username))
+                        {
+                            <tr>
+                                <td>@user.Id</td>
+                                <td>
+                                    <strong>@user.Username</strong>
+                                    @if (user.Role == "Admin")
+                                    {
+                                        <i class="text-warning" title="Administrator">👑</i>
+                                    }
+                                </td>
+                                <td>@user.Email</td>
+                                <td>
+                                    <form asp-controller="Admin" asp-action="UpdateUserRole" asp-route-id="@user.Id" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <select name="role" class="form-select form-select-sm" onchange="this.form.submit()">
+                                            @if (user.Role == "User")
+                                            {
+                                                <option value="User" selected>User</option>
+                                                <option value="Admin">Admin</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="User">User</option>
+                                                <option value="Admin" selected>Admin</option>
+                                            }
+                                        </select>
+                                    </form>
+                                </td>
+                                <td>
+                                    <span class="badge bg-@(user.IsActive ? "success" : "danger")">
+                                        @(user.IsActive ? "Active" : "Inactive")
+                                    </span>
+                                </td>
+                                <td>@user.CreatedAt.ToString("MMM dd, yyyy HH:mm")</td>
+                                <td>@(user.UpdatedAt?.ToString("MMM dd, yyyy HH:mm") ?? "Never")</td>
+                                <td>
+                                    <form asp-controller="Admin" asp-action="ToggleUserStatus" asp-route-id="@user.Id" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-@(user.IsActive ? "warning" : "success")" 
+                                                title="@(user.IsActive ? "Deactivate" : "Activate") User">
+                                            @(user.IsActive ? "🔒" : "🔓")
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <a href="@Url.Action("Index", "Admin")" class="btn btn-secondary">
+                ← Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<script>
+    // Auto-hide alerts after 5 seconds
+    window.setTimeout(function() {
+        $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove(); 
+        });
+    }, 5000);
+</script>

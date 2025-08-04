@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "My Documents";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4">My Documents</h1>
+            <p class="lead">Access and manage your secure documents.</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-folder-open text-muted" style="font-size: 4rem;"></i>
+                    <h4 class="mt-3">No Documents Yet</h4>
+                    <p class="text-muted">You haven't uploaded any documents yet. Start by uploading your first document.</p>
+                    <a href="@Url.Action("Upload", "User")" class="btn btn-primary">Upload Document</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
